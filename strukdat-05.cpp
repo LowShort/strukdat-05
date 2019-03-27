@@ -38,7 +38,7 @@ void insertFirst(Pembalap* &head, Pembalap* node) {
 }
 
 void insertBefore(Pembalap* &head, int nomorKey, Pembalap* node) {
-	pointer pBantu=head;
+	Pembalap* pBantu=head;
 	if(head->nomor==nomorKey){
 		node->next=head;
 		head->prev=node;
@@ -84,11 +84,11 @@ void traversal(Pembalap* head) {
 }
 // sorting ascending
 void sortingByNomor(Pembalap* &head){
-	pointer temp1, temp2;
+	Pembalap* temp1, temp2;
 	if(head==NULL){
 		cout<<"List Kosong.";
 	}else{
-		pointer pBantu=head;
+		Pembalap* pBantu=head;
 		while(pBantu!=NULL){
 			if(pBantu->nomor>pBantu->next->nomor){
 				if(pBantu->prev==NULL){
@@ -137,11 +137,11 @@ int main() {
 	insertBefore(head, keyNomor, pBaru);
 	traversal(head);
 
-	/*cout << "\n>>> SortingByNomor" << endl;
+	cout << "\n>>> SortingByNomor" << endl;
 	sortingByNomor(head);
 	traversal(head);
 
-	keyNomor = 3;
+	/*keyNomor = 3;
 	cout << "\n>>> Delete nomor " << keyNomor << endl;
 	Pembalap* pHapus = NULL;
 	deleteByKey(head, keyNomor, pHapus);
