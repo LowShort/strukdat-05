@@ -32,7 +32,7 @@ void insertFirst(Pembalap* &head, Pembalap* node) {
 		head = node;
 	else {
 		node->next = head;
-		node->prev = node;
+		head->prev = node;
 		head = node;
 	}
 }
@@ -58,63 +58,88 @@ void insertBefore(Pembalap* &head, int nomorKey, Pembalap* node) {
 	}
 }
 
-//void deleteByKey(Pembalap* &head, int nomorKey, Pembalap* &deletedNode);
+void deleteByKey(Pembalap* &head, int nomorKey, Pembalap* &deletedNode){
+	search(head, nomorKey, deletedNode);
+    if(deletedNode == NULL) return;
+
+    deletedNode->prev->next = deletedNode->next;
+    deletedNode->next->prev = deletedNode->prev;
+
+    delete deletedNode;
+}
 
 void search(Pembalap* &firstNode, int nomorKey, Pembalap* &pToUpdate) {
 	pToUpdate = firstNode;
-	while (pToUpdate->nomor != nomorKey) {
-		pToUpdate = pToUpdate->next;
-	}
+    while(pToUpdate != NULL && pToUpdate->nomor != nomorKey)
+        pToUpdate = pToUpdate->next;
+
+    if(pToUpdate->next == NULL && pToUpdate->nomor != nomorKey)
+    {
+        puts("Target Not Found!");
+        pToUpdate = NULL;
+    }
 }
 void traversal(Pembalap* head) {
-	Pembalap* help;
-	if (head == NULL) {
+	Pembalap* pBantu = head;
+	if (pBantu == NULL) {
 		cout << "***LIST KOSONG***\n";
 	}
 	else {
-		help = head;
-		while (help != NULL) {
-			cout << "Nomor: " << help->nomor << endl;
-			cout << "Nama: " << help->nama << endl;
-			cout << "Waktu: " << help->waktu << endl;
+		while (pBantu != NULL) {
+			cout << "Nomor: " << pBantu->nomor << endl;
+			cout << "Nama: " << pBantu->nama << endl;
+			cout << "Waktu: " << pBantu->waktu << endl;
 			cout << endl;
-			help = help->next;
+			pBantu = pBantu->next;
 		}
 	}
 }
 // sorting ascending
 void sortingByNomor(Pembalap* &head){
-	Pembalap* temp1, temp2;
-	if(head==NULL){
-		cout<<"List Kosong.";
-	}else{
-		Pembalap* pBantu=head;
-		while(pBantu!=NULL){
-			if(pBantu->nomor>pBantu->next->nomor){
-				if(pBantu->prev==NULL){
-					temp1=pBantu->next->next;
-					pBantu->next->next->prev=pBantu;
-					pBantu->prev=pBantu->next;
-					pBantu->next->prev=NULL;
-					pBantu->next->next=pBantu;
-					pBantu->next=temp1;
-				}else if(pBantu->next==NULL){
-					
-				}else{
-					pBantu->next->next->prev=pBantu; //1
-					pBantu->prev->next=pBantu->next; //2
-					pBantu->next=pBantu->next->next; //3
-					pBantu->next->prev=pBantu->prev; //4
-					pBantu->prev=pBantu->next; //5
-					pBantu->prev->next=pBantu;
+	int swapped;
+    Pembalap *ptr1;
+    Pembalap *lptr = NULL;
+
+    if (head == NULL)
+        return;
+
+    do
+		{
+			swapped = 0;
+			ptr1 = head;
+
+			while (ptr1->next != lptr)
+			{
+				if (ptr1->nomor > ptr1->next->nomor)
+				{
+					swap(ptr1->nomor, ptr1->next->nomor);
+					swap(ptr1->nama, ptr1->next->nama);
+					swap(ptr1->waktu, ptr1->next->waktu);
+					swapped = 1;
 				}
+				ptr1 = ptr1->next;
 			}
-			pBantu=pBantu->next;
+			lptr = ptr1;
 		}
+		while (swapped);
 	}
 }
 // update Pembalap from user input
-//void update(Pembalap* firstNode, int nomorKey);
+void update(Pembalap* firstNode, int nomorKey){
+	Pembalap* pCari;
+
+    search(firstNode, nomorKey, pCari);
+    if(pCari == NULL) return;
+
+    cout << "Nama: ";
+    cin >> pCari->nama;
+
+    cout << "Nomor: ";
+    cin >> pCari->nomor;
+
+    cout << "Waktu: ";
+    cin >> pCari->waktu;
+}
 
 int main() {
 	Pembalap* head = NULL;
@@ -141,7 +166,7 @@ int main() {
 	sortingByNomor(head);
 	traversal(head);
 
-	/*keyNomor = 3;
+	keyNomor = 3;
 	cout << "\n>>> Delete nomor " << keyNomor << endl;
 	Pembalap* pHapus = NULL;
 	deleteByKey(head, keyNomor, pHapus);
@@ -152,7 +177,7 @@ int main() {
 	update(head, keyNomor);
 
 	cout << "\n>>> Updated list\n";
-	traversal(head);*/
+	traversal(head);
 
 	return 0;
 }
