@@ -38,14 +38,23 @@ void insertFirst(Pembalap* &head, Pembalap* node) {
 }
 
 void insertBefore(Pembalap* &head, int nomorKey, Pembalap* node) {
-	Pembalap* pCari;
-	if (pCari->prev == NULL)
-		insertFirst(head, node);
-	else {
-		pCari->next = pCari;
-		node->prev = pCari->prev;
-		pCari->prev->next = node;
-		pCari->prev = node;
+	pointer pBantu=head;
+	if(head->nomor==nomorKey){
+		node->next=head;
+		head->prev=node;
+		head=node;
+	}else{
+		while(pBantu!=NULL){
+			if(pBantu->nomor==nomorKey){
+				node->next=pBantu;
+				node->prev=pBantu->prev;
+				pBantu->prev->next=node;
+				pBantu->prev=node;
+				break;
+			}else{
+				pBantu=pBantu->next;
+			}
+		}
 	}
 }
 
@@ -74,7 +83,36 @@ void traversal(Pembalap* head) {
 	}
 }
 // sorting ascending
-//void sortingByNomor(Pembalap* &head);
+void sortingByNomor(Pembalap* &head){
+	pointer temp1, temp2;
+	if(head==NULL){
+		cout<<"List Kosong.";
+	}else{
+		pointer pBantu=head;
+		while(pBantu!=NULL){
+			if(pBantu->nomor>pBantu->next->nomor){
+				if(pBantu->prev==NULL){
+					temp1=pBantu->next->next;
+					pBantu->next->next->prev=pBantu;
+					pBantu->prev=pBantu->next;
+					pBantu->next->prev=NULL;
+					pBantu->next->next=pBantu;
+					pBantu->next=temp1;
+				}else if(pBantu->next==NULL){
+					
+				}else{
+					pBantu->next->next->prev=pBantu; //1
+					pBantu->prev->next=pBantu->next; //2
+					pBantu->next=pBantu->next->next; //3
+					pBantu->next->prev=pBantu->prev; //4
+					pBantu->prev=pBantu->next; //5
+					pBantu->prev->next=pBantu;
+				}
+			}
+			pBantu=pBantu->next;
+		}
+	}
+}
 // update Pembalap from user input
 //void update(Pembalap* firstNode, int nomorKey);
 
