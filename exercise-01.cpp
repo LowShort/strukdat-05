@@ -58,16 +58,6 @@ void insertBefore(Pembalap* &head, int nomorKey, Pembalap* node) {
 	}
 }
 
-void deleteByKey(Pembalap* &head, int nomorKey, Pembalap* &deletedNode){
-	search(head, nomorKey, deletedNode);
-    if(deletedNode == NULL) return;
-
-    deletedNode->prev->next = deletedNode->next;
-    deletedNode->next->prev = deletedNode->prev;
-
-    delete deletedNode;
-}
-
 void search(Pembalap* &firstNode, int nomorKey, Pembalap* &pToUpdate) {
 	pToUpdate = firstNode;
     while(pToUpdate != NULL && pToUpdate->nomor != nomorKey)
@@ -79,6 +69,18 @@ void search(Pembalap* &firstNode, int nomorKey, Pembalap* &pToUpdate) {
         pToUpdate = NULL;
     }
 }
+
+void deleteByKey(Pembalap* &head, int nomorKey, Pembalap* &deletedNode){
+	search(head, nomorKey, deletedNode);
+    if(deletedNode == NULL) return;
+
+    deletedNode->prev->next = deletedNode->next;
+    deletedNode->next->prev = deletedNode->prev;
+
+    delete deletedNode;
+}
+
+
 void traversal(Pembalap* head) {
 	Pembalap* pBantu = head;
 	if (pBantu == NULL) {
@@ -120,8 +122,7 @@ void sortingByNomor(Pembalap* &head){
 				ptr1 = ptr1->next;
 			}
 			lptr = ptr1;
-		}
-		while (swapped);
+		} while (swapped);
 	}
 }
 // update Pembalap from user input
